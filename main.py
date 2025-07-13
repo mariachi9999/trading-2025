@@ -13,6 +13,8 @@ import pytz
 from dotenv import load_dotenv
 import os
 import logging
+import json
+from io import StringIO
 
 load_dotenv()
 
@@ -40,11 +42,17 @@ EMAIL_CONTRASENA = os.getenv("EMAIL_CONTRASENA")
 # print(EMAIL_DESTINATARIO)
 # print(EMAIL_CONTRASENA)
 
+# Obtener la variable de entorno
+raw_json = os.getenv("GOOGLE_CREDS_JSON")
 
+if raw_json is None:
+    raise ValueError("La variable de entorno GOOGLE_CREDS_JSON no está definida.")
 
 # Google Sheets setup
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
-creds = Credentials.from_service_account_file("creds.json", scopes=SCOPES)
+# Obtener el JSON desde variable de entorno
+creds_dict = json.loads(raw_json)
+creds = Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
 client = gspread.authorize(creds)
 sheet = client.open("AI_Oportunidades_Mercado").worksheet(TICKER_SHEET_NAME)
 oportunidades_sheet = client.open("AI_Oportunidades_Mercado").worksheet("Oportunidades")
