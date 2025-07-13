@@ -34,7 +34,6 @@ logging.basicConfig(
 # ========== CONFIGURACIÓN ==========
 TICKER_SHEET_NAME = "Tickers"
 ALERT_DESTINATIONS = ["email"]
-RSI_THRESHOLD = 30
 EMAIL_REMITENTE = os.getenv("EMAIL_REMITENTE")
 EMAIL_DESTINATARIO = os.getenv("EMAIL_DESTINATARIO")
 EMAIL_CONTRASENA = os.getenv("EMAIL_CONTRASENA")
@@ -192,8 +191,7 @@ def registrar_oportunidad(ticker, actual,log_sheet,oportunidades_sheet):
             f"{actual['macd_line']:.2f}",
             f"{actual['di+']:.2f}",
             f"{actual['di-']:.2f}",
-            f"{actual['adx']:.2f}",
-            f"{actual['rsi']:.2f}"
+            f"{actual['adx']:.2f}"
         ], index=2)
         mensaje_log = f"Oportunidad registrada para {ticker} el {fecha}"
         logging.info(mensaje_log)
@@ -209,8 +207,7 @@ def registrar_cierre(ticker, anterior,log_sheet,cierres_sheet):
         f"{anterior['macd_line']:.2f}",
         f"{anterior['di+']:.2f}",
         f"{anterior['di-']:.2f}",
-        f"{anterior['adx']:.2f}",
-        f"{anterior['rsi']:.2f}"
+        f"{anterior['adx']:.2f}"
     ], index=2)
     mensaje_log = f"Cierre registrado para {ticker} el {fecha}"
     logging.info(mensaje_log)
@@ -222,7 +219,7 @@ def enviar_alerta(ticker, actual,log_sheet,oportunidades_sheet):
         f"⚠️ Señal de oportunidad detectada para {ticker}:\n"
         f"MACD > 0, DI+ > DI- y DI+ > ADX solo en última vela\n"
         f"Valores:\n"
-        f"MACD line: {actual['macd_line']:.2f}\nDI+: {actual['di+']:.2f}\nDI-: {actual['di-']:.2f}\nADX: {actual['adx']:.2f}\nRSI: {actual['rsi']:.2f}"
+        f"MACD line: {actual['macd_line']:.2f}\nDI+: {actual['di+']:.2f}\nDI-: {actual['di-']:.2f}\nADX: {actual['adx']:.2f}"
     )
     if "email" in ALERT_DESTINATIONS:
         enviar_email(mensaje,log_sheet)
