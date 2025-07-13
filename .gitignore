@@ -4,3 +4,4 @@ venv/
 creds.json
 .env
 env
+__pycache__
