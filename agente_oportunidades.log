@@ -1,0 +1,176 @@
+2025-07-12 22:48:46,497 [WARNING] Hoja 'Log' no encontrada. Creando nueva.
+2025-07-12 22:48:47,902 [INFO] Ejecutando agente...
+2025-07-12 22:48:48,487 [INFO] get_tickers work ok
+2025-07-12 22:48:53,564 [INFO] Datos OHLCV obtenidos para BTC
+2025-07-12 22:48:53,919 [INFO] Datos OHLCV obtenidos para ETH
+2025-07-12 22:48:54,263 [INFO] Datos OHLCV obtenidos para ADA
+2025-07-12 22:48:54,609 [INFO] Datos OHLCV obtenidos para XRP
+2025-07-12 22:48:54,975 [INFO] Datos OHLCV obtenidos para DOGE
+2025-07-12 22:48:55,003 [INFO] Ejecución del agente finalizada.
+2025-07-12 22:59:45,880 [INFO] Ejecutando agente...
+2025-07-12 22:59:46,464 [INFO] get_tickers work ok
+2025-07-12 22:59:46,711 [INFO] Analizando ticker: BTC
+2025-07-12 22:59:51,945 [INFO] Datos OHLCV obtenidos para BTC
+2025-07-12 22:59:51,982 [INFO] Analizando ticker: ETH
+2025-07-12 22:59:52,538 [INFO] Datos OHLCV obtenidos para ETH
+2025-07-12 22:59:52,572 [INFO] Analizando ticker: ADA
+2025-07-12 22:59:53,123 [INFO] Datos OHLCV obtenidos para ADA
+2025-07-12 22:59:53,149 [INFO] Analizando ticker: XRP
+2025-07-12 22:59:53,697 [INFO] Datos OHLCV obtenidos para XRP
+2025-07-12 22:59:53,730 [INFO] Analizando ticker: DOGE
+2025-07-12 22:59:54,279 [INFO] Datos OHLCV obtenidos para DOGE
+2025-07-12 22:59:54,314 [INFO] Ejecución finalizada. Duración total: 8.43 segundos
+2025-07-12 22:59:54,544 [INFO] Ejecución del agente finalizada.
+2025-07-12 23:03:44,090 [INFO] Ejecutando agente...
+2025-07-12 23:03:44,645 [INFO] get_tickers work ok
+2025-07-12 23:03:44,869 [INFO] Analizando ticker: BTC
+2025-07-12 23:03:49,940 [INFO] Datos OHLCV obtenidos para BTC
+2025-07-12 23:03:50,222 [INFO] Analizando ticker: ETH
+2025-07-12 23:03:50,770 [INFO] Datos OHLCV obtenidos para ETH
+2025-07-12 23:03:51,007 [INFO] Analizando ticker: ADA
+2025-07-12 23:03:51,537 [INFO] Datos OHLCV obtenidos para ADA
+2025-07-12 23:03:51,794 [INFO] Analizando ticker: XRP
+2025-07-12 23:03:52,330 [INFO] Datos OHLCV obtenidos para XRP
+2025-07-12 23:03:52,572 [INFO] Analizando ticker: DOGE
+2025-07-12 23:03:53,111 [INFO] Datos OHLCV obtenidos para DOGE
+2025-07-12 23:03:53,388 [INFO] Ejecución finalizada. Duración total: 9.30 segundos
+2025-07-12 23:03:53,621 [INFO] Ejecución del agente finalizada.
+2025-07-12 23:47:30,190 [INFO] Worksheet 'Log' encontrada.
+2025-07-12 23:47:30,190 [INFO] Ejecutando agente...
+2025-07-12 23:47:30,823 [INFO] get_tickers work ok
+2025-07-12 23:47:31,069 [INFO] Analizando ticker: ETH
+2025-07-12 23:47:36,352 [INFO] Datos OHLCV obtenidos para ETH
+2025-07-12 23:47:36,386 [INFO] [ETH] Condiciones actuales: MACD=114.61, DI+=35.72, DI-=12.55, ADX=22.08 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-12 23:47:36,619 [INFO] Analizando ticker: BTC
+2025-07-12 23:47:37,166 [INFO] Datos OHLCV obtenidos para BTC
+2025-07-12 23:47:37,204 [INFO] [BTC] Condiciones actuales: MACD=2798.28, DI+=34.82, DI-=12.07, ADX=19.94 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-12 23:47:37,440 [INFO] Analizando ticker: XRP
+2025-07-12 23:47:37,982 [INFO] Datos OHLCV obtenidos para XRP
+2025-07-12 23:47:38,018 [INFO] [XRP] Condiciones actuales: MACD=0.13, DI+=44.20, DI-=8.48, ADX=28.22 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-12 23:47:38,263 [INFO] Analizando ticker: SOL
+2025-07-12 23:47:38,796 [INFO] Datos OHLCV obtenidos para SOL
+2025-07-12 23:47:38,837 [INFO] [SOL] Condiciones actuales: MACD=2.86, DI+=26.37, DI-=15.09, ADX=15.84 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-12 23:47:39,056 [INFO] Analizando ticker: ADA
+2025-07-12 23:47:39,613 [INFO] Datos OHLCV obtenidos para ADA
+2025-07-12 23:47:39,648 [INFO] [ADA] Condiciones actuales: MACD=0.02, DI+=37.25, DI-=12.05, ADX=27.65 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-12 23:47:39,878 [INFO] Analizando ticker: BNB
+2025-07-12 23:47:40,426 [INFO] Datos OHLCV obtenidos para BNB
+2025-07-12 23:47:40,451 [INFO] [BNB] Condiciones actuales: MACD=9.39, DI+=28.23, DI-=14.36, ADX=17.39 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-12 23:47:40,674 [INFO] Analizando ticker: AVAX
+2025-07-12 23:47:41,232 [INFO] Datos OHLCV obtenidos para AVAX
+2025-07-12 23:47:41,271 [INFO] [AVAX] Condiciones actuales: MACD=0.37, DI+=30.18, DI-=16.52, ADX=19.26 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-12 23:47:41,506 [INFO] Analizando ticker: LTC
+2025-07-12 23:47:42,075 [INFO] Datos OHLCV obtenidos para LTC
+2025-07-12 23:47:42,100 [INFO] [LTC] Condiciones actuales: MACD=1.65, DI+=28.19, DI-=17.14, ADX=18.41 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-12 23:47:42,323 [INFO] Analizando ticker: LINK
+2025-07-12 23:47:42,899 [INFO] Datos OHLCV obtenidos para LINK
+2025-07-12 23:47:42,922 [INFO] [LINK] Condiciones actuales: MACD=0.39, DI+=31.88, DI-=16.73, ADX=16.90 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-12 23:47:43,152 [INFO] Analizando ticker: XLM
+2025-07-12 23:47:43,700 [INFO] Datos OHLCV obtenidos para XLM
+2025-07-12 23:47:43,731 [INFO] [XLM] Condiciones actuales: MACD=0.03, DI+=47.44, DI-=6.67, ADX=36.12 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-12 23:47:43,974 [INFO] Analizando ticker: UNI
+2025-07-12 23:47:44,521 [INFO] Datos OHLCV obtenidos para UNI
+2025-07-12 23:47:44,565 [INFO] [UNI] Condiciones actuales: MACD=0.40, DI+=28.39, DI-=13.68, ADX=20.34 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-12 23:47:44,815 [INFO] Analizando ticker: AAVE
+2025-07-12 23:47:45,376 [INFO] Datos OHLCV obtenidos para AAVE
+2025-07-12 23:47:45,412 [INFO] [AAVE] Condiciones actuales: MACD=11.20, DI+=24.44, DI-=12.62, ADX=18.95 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-12 23:47:45,643 [INFO] Analizando ticker: KNC
+2025-07-12 23:47:46,207 [INFO] Datos OHLCV obtenidos para KNC
+2025-07-12 23:47:46,232 [INFO] [KNC] Condiciones actuales: MACD=0.04, DI+=65.15, DI-=5.99, ADX=33.46 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-12 23:47:46,464 [INFO] Ejecución finalizada. Duración total: 16.27 segundos
+2025-07-12 23:47:46,709 [INFO] Ejecución del agente finalizada.
+2025-07-12 23:54:35,187 [INFO] Worksheet 'Log' encontrada.
+2025-07-12 23:54:35,187 [INFO] Ejecutando enviar_email... Remitente: nicolas.lupo.86@gmail.com, Destinatario: nicolas.lupo.86@gmail.com
+2025-07-12 23:54:38,195 [INFO] Correo enviado correctamente
+2025-07-13 00:00:28,812 [INFO] Worksheet 'Log' encontrada.
+2025-07-13 00:00:28,813 [INFO] Ejecutando agente...
+2025-07-13 00:00:29,579 [INFO] get_tickers work ok
+2025-07-13 00:00:30,007 [INFO] Analizando ticker: ETH
+2025-07-13 00:00:36,835 [INFO] Datos OHLCV obtenidos para ETH
+2025-07-13 00:00:36,865 [INFO] [ETH] Condiciones actuales: MACD=115.02, DI+=35.56, DI-=12.49, ADX=22.08 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:00:37,166 [INFO] Analizando ticker: BTC
+2025-07-13 00:00:37,776 [INFO] Datos OHLCV obtenidos para BTC
+2025-07-13 00:00:37,806 [INFO] [BTC] Condiciones actuales: MACD=2806.79, DI+=34.65, DI-=12.01, ADX=19.94 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:00:38,091 [INFO] Analizando ticker: XRP
+2025-07-13 00:00:38,723 [INFO] Datos OHLCV obtenidos para XRP
+2025-07-13 00:00:38,753 [INFO] [XRP] Condiciones actuales: MACD=0.13, DI+=43.88, DI-=8.42, ADX=28.22 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:00:39,032 [INFO] Analizando ticker: SOL
+2025-07-13 00:00:39,663 [INFO] Datos OHLCV obtenidos para SOL
+2025-07-13 00:00:39,695 [INFO] [SOL] Condiciones actuales: MACD=2.87, DI+=26.36, DI-=15.08, ADX=15.84 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:00:39,988 [INFO] Analizando ticker: ADA
+2025-07-13 00:00:40,675 [INFO] Datos OHLCV obtenidos para ADA
+2025-07-13 00:00:40,705 [INFO] [ADA] Condiciones actuales: MACD=0.02, DI+=37.17, DI-=12.03, ADX=27.65 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:00:40,990 [INFO] Analizando ticker: BNB
+2025-07-13 00:00:41,613 [INFO] Datos OHLCV obtenidos para BNB
+2025-07-13 00:00:41,648 [INFO] [BNB] Condiciones actuales: MACD=9.43, DI+=28.20, DI-=14.35, ADX=17.39 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:00:41,925 [INFO] Analizando ticker: AVAX
+2025-07-13 00:00:42,532 [INFO] Datos OHLCV obtenidos para AVAX
+2025-07-13 00:00:42,564 [INFO] [AVAX] Condiciones actuales: MACD=0.37, DI+=30.18, DI-=16.52, ADX=19.26 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:00:42,857 [INFO] Analizando ticker: LTC
+2025-07-13 00:00:43,460 [INFO] Datos OHLCV obtenidos para LTC
+2025-07-13 00:00:43,498 [INFO] [LTC] Condiciones actuales: MACD=1.66, DI+=28.14, DI-=17.11, ADX=18.41 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:00:43,770 [INFO] Analizando ticker: LINK
+2025-07-13 00:00:44,395 [INFO] Datos OHLCV obtenidos para LINK
+2025-07-13 00:00:44,431 [INFO] [LINK] Condiciones actuales: MACD=0.39, DI+=31.85, DI-=16.71, ADX=16.90 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:00:44,724 [INFO] Analizando ticker: XLM
+2025-07-13 00:00:45,372 [INFO] Datos OHLCV obtenidos para XLM
+2025-07-13 00:00:45,405 [INFO] [XLM] Condiciones actuales: MACD=0.03, DI+=47.09, DI-=6.57, ADX=36.14 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:00:45,687 [INFO] Analizando ticker: UNI
+2025-07-13 00:00:46,299 [INFO] Datos OHLCV obtenidos para UNI
+2025-07-13 00:00:46,327 [INFO] [UNI] Condiciones actuales: MACD=0.40, DI+=28.34, DI-=13.66, ADX=20.34 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:00:46,587 [INFO] Analizando ticker: AAVE
+2025-07-13 00:00:47,175 [INFO] Datos OHLCV obtenidos para AAVE
+2025-07-13 00:00:47,207 [INFO] [AAVE] Condiciones actuales: MACD=11.23, DI+=24.44, DI-=12.62, ADX=18.95 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:00:47,496 [INFO] Analizando ticker: KNC
+2025-07-13 00:00:48,108 [INFO] Datos OHLCV obtenidos para KNC
+2025-07-13 00:00:48,134 [INFO] [KNC] Condiciones actuales: MACD=0.04, DI+=65.15, DI-=5.99, ADX=33.46 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:00:48,426 [INFO] Ejecutando enviar_email... Remitente: nicolas.lupo.86@gmail.com, Destinatario: nicolas.lupo.86@gmail.com
+2025-07-13 00:00:51,849 [INFO] Correo enviado correctamente
+2025-07-13 00:00:52,277 [INFO] Ejecución finalizada. Duración total: 23.46 segundos
+2025-07-13 00:00:52,587 [INFO] Ejecución del agente finalizada.
+2025-07-13 00:16:05,336 [INFO] Worksheet 'Log' encontrada.
+2025-07-13 00:16:26,694 [INFO] Ping recibido.
+2025-07-13 00:16:48,228 [INFO] Ejecutando agente...
+2025-07-13 00:16:48,945 [INFO] get_tickers work ok
+2025-07-13 00:16:49,178 [INFO] Analizando ticker: ETH
+2025-07-13 00:16:56,371 [INFO] Datos OHLCV obtenidos para ETH
+2025-07-13 00:16:56,395 [INFO] [ETH] Condiciones actuales: MACD=114.88, DI+=35.56, DI-=12.49, ADX=22.08 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:16:56,637 [INFO] Analizando ticker: BTC
+2025-07-13 00:16:57,187 [INFO] Datos OHLCV obtenidos para BTC
+2025-07-13 00:16:57,222 [INFO] [BTC] Condiciones actuales: MACD=2806.25, DI+=34.65, DI-=12.01, ADX=19.94 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:16:57,437 [INFO] Analizando ticker: XRP
+2025-07-13 00:16:58,019 [INFO] Datos OHLCV obtenidos para XRP
+2025-07-13 00:16:58,054 [INFO] [XRP] Condiciones actuales: MACD=0.13, DI+=43.88, DI-=8.42, ADX=28.22 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:16:58,285 [INFO] Analizando ticker: SOL
+2025-07-13 00:16:58,841 [INFO] Datos OHLCV obtenidos para SOL
+2025-07-13 00:16:58,887 [INFO] [SOL] Condiciones actuales: MACD=2.84, DI+=26.36, DI-=15.08, ADX=15.84 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:16:59,118 [INFO] Analizando ticker: ADA
+2025-07-13 00:16:59,701 [INFO] Datos OHLCV obtenidos para ADA
+2025-07-13 00:16:59,736 [INFO] [ADA] Condiciones actuales: MACD=0.02, DI+=37.17, DI-=12.03, ADX=27.65 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:16:59,983 [INFO] Analizando ticker: BNB
+2025-07-13 00:17:00,533 [INFO] Datos OHLCV obtenidos para BNB
+2025-07-13 00:17:00,586 [INFO] [BNB] Condiciones actuales: MACD=9.41, DI+=28.20, DI-=14.35, ADX=17.39 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:17:00,816 [INFO] Analizando ticker: AVAX
+2025-07-13 00:17:01,383 [INFO] Datos OHLCV obtenidos para AVAX
+2025-07-13 00:17:01,418 [INFO] [AVAX] Condiciones actuales: MACD=0.37, DI+=30.18, DI-=16.52, ADX=19.26 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:17:01,667 [INFO] Analizando ticker: LTC
+2025-07-13 00:17:02,216 [INFO] Datos OHLCV obtenidos para LTC
+2025-07-13 00:17:02,250 [INFO] [LTC] Condiciones actuales: MACD=1.65, DI+=28.14, DI-=17.11, ADX=18.41 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:17:02,483 [INFO] Analizando ticker: LINK
+2025-07-13 00:17:03,048 [INFO] Datos OHLCV obtenidos para LINK
+2025-07-13 00:17:03,081 [INFO] [LINK] Condiciones actuales: MACD=0.39, DI+=31.85, DI-=16.71, ADX=16.90 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:17:03,316 [INFO] Analizando ticker: XLM
+2025-07-13 00:17:03,864 [INFO] Datos OHLCV obtenidos para XLM
+2025-07-13 00:17:03,915 [INFO] [XLM] Condiciones actuales: MACD=0.03, DI+=47.15, DI-=6.56, ADX=36.14 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:17:04,130 [INFO] Analizando ticker: UNI
+2025-07-13 00:17:04,762 [INFO] Datos OHLCV obtenidos para UNI
+2025-07-13 00:17:04,804 [INFO] [UNI] Condiciones actuales: MACD=0.40, DI+=28.32, DI-=13.65, ADX=20.34 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:17:05,045 [INFO] Analizando ticker: AAVE
+2025-07-13 00:17:05,612 [INFO] Datos OHLCV obtenidos para AAVE
+2025-07-13 00:17:05,647 [INFO] [AAVE] Condiciones actuales: MACD=11.24, DI+=24.44, DI-=12.62, ADX=18.95 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:17:05,863 [INFO] Analizando ticker: KNC
+2025-07-13 00:17:06,428 [INFO] Datos OHLCV obtenidos para KNC
+2025-07-13 00:17:06,453 [INFO] [KNC] Condiciones actuales: MACD=0.04, DI+=65.15, DI-=5.99, ADX=33.46 -> Cumple | Condiciones anteriores -> Cumplía
+2025-07-13 00:17:09,641 [INFO] Correo enviado correctamente
+2025-07-13 00:17:10,075 [INFO] Ejecución finalizada. Duración total: 21.85 segundos
+2025-07-13 00:17:10,307 [INFO] Ejecución del agente finalizada.
