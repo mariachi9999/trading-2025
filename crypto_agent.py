@@ -29,7 +29,6 @@ logging.basicConfig(
 # ========== CONFIGURACIÓN ==========
 TICKER_SHEET_NAME = "Cryptos_Tickers"
 ALERT_DESTINATIONS = ["email"]
-RSI_THRESHOLD = 30
 EMAIL_REMITENTE = os.getenv("EMAIL_REMITENTE")
 EMAIL_DESTINATARIO = os.getenv("EMAIL_DESTINATARIO")
 EMAIL_CONTRASENA = os.getenv("EMAIL_CONTRASENA")
@@ -80,17 +79,24 @@ def crypto_ejecutar_agente():
     tickers = get_tickers(sheet)
     for ticker in tickers:
         ticker = str(ticker).strip()
-        logging.info(f"Analizando ticker: {ticker}")
-        registrar_log_buffer("INFO", f"Analizando ticker {ticker}", ticker)
-        df = get_crypto_ohlcv(ticker)
-        if df.empty:
-            msg = f"No se obtuvieron datos para {ticker}"
-            logging.warning(msg)
-            registrar_log_buffer("WARNING", "No se obtuvieron datos", ticker)
-            continue
-        if analizar_indicadores(df, ticker,log_sheet,posiciones_sheet,cierres_sheet):
-            actual = df.iloc[-1]
-            enviar_alerta(ticker, actual,log_sheet,oportunidades_sheet)
+        try:
+            logging.info(f"Analizando ticker: {ticker}")
+            registrar_log_buffer("INFO", f"Analizando ticker {ticker}", ticker)
+            df = get_crypto_ohlcv(ticker)
+            if df.empty:
+                msg = f"No se obtuvieron datos para {ticker}"
+                logging.warning(msg)
+                registrar_log_buffer("WARNING", "No se obtuvieron datos", ticker)
+                continue
+            if analizar_indicadores(df, ticker,log_sheet,posiciones_sheet,cierres_sheet):
+                actual = df.iloc[-1]
+                enviar_alerta(ticker, actual,log_sheet,oportunidades_sheet)
+    
+        except Exception as e:
+            msg = f"[{ticker}] Error inesperado durante el análisis: {e}"
+            logging.error(msg)
+            registrar_log_buffer("error", msg, ticker)
+            continue  # Importante: no dejar que se caiga todo el loop
     
     if "email" in ALERT_DESTINATIONS:
         mensaje = f"🧠 Agente ejecutado correctamente. Total de cryptos analizados: {len(tickers)}.\n"
