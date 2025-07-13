@@ -2,7 +2,8 @@
 from fastapi import FastAPI
 import logging
 
-from main import ejecutar_agente
+from acciones_agent import stocks_ejecutar_agente
+from crypto_agent import crypto_ejecutar_agente
 
 app = FastAPI()
 
@@ -15,10 +16,19 @@ def ping():
     logging.info("Ping recibido.")
     return {"message": "Ping recibido. Render no dormirá 😉"}
 
-@app.get("/run-agente")
-def run_agente():
+@app.get("/run-crypto-agente")
+def crypto_run_agente():
     try:
-        ejecutar_agente()
+        crypto_ejecutar_agente()
+        return {"message": "🧠 Agente ejecutado correctamente."}
+    except Exception as e:
+        logging.error(f"Error al ejecutar agente desde endpoint: {e}")
+        return {"error": str(e)}
+
+@app.get("/run-stock-agente")
+def stocks_run_agente():
+    try:
+        stocks_ejecutar_agente()
         return {"message": "🧠 Agente ejecutado correctamente."}
     except Exception as e:
         logging.error(f"Error al ejecutar agente desde endpoint: {e}")

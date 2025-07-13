@@ -54,15 +54,15 @@ SCOPES = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapi
 creds_dict = json.loads(raw_json)
 creds = Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
 client = gspread.authorize(creds)
-sheet = client.open("AI_Oportunidades_Mercado").worksheet(TICKER_SHEET_NAME)
-oportunidades_sheet = client.open("AI_Oportunidades_Mercado").worksheet("Oportunidades")
-cierres_sheet = client.open("AI_Oportunidades_Mercado").worksheet("Cierres")
-posiciones_sheet = client.open("AI_Oportunidades_Mercado").worksheet("Posiciones")
+# sheet = client.open("AI_Oportunidades_Mercado").worksheet(TICKER_SHEET_NAME)
+# oportunidades_sheet = client.open("AI_Oportunidades_Mercado").worksheet("Oportunidades")
+# cierres_sheet = client.open("AI_Oportunidades_Mercado").worksheet("Cierres")
+# posiciones_sheet = client.open("AI_Oportunidades_Mercado").worksheet("Posiciones")
 
 # Binance setup
 exchange = ccxt.binance()
 
-def get_log_sheet():
+def get_log_sheet(log_sheet):
     try:
         # Intenta abrir el spreadsheet
         sh = client.open("AI_Oportunidades_Mercado")
@@ -72,18 +72,17 @@ def get_log_sheet():
 
     try:
         # Intenta abrir la worksheet "Log"
-        log_ws = sh.worksheet("Log")
-        logging.info("Worksheet 'Log' encontrada.")
+        log_ws = sh.worksheet(log_sheet)
+        logging.info(f"Worksheet {log_sheet} encontrada.")
     except gspread.WorksheetNotFound:
-        logging.warning("Worksheet 'Log' no existe. Se creará.")
-        log_ws = sh.add_worksheet(title="Log", rows=1000, cols=3)
+        logging.warning(f"Worksheet {log_sheet} no existe. Se creará.")
+        log_ws = sh.add_worksheet(title=log_sheet, rows=1000, cols=3)
         log_ws.append_row(["Timestamp", "Nivel", "Mensaje"])
 
     return log_ws
 
-log_sheet = get_log_sheet()
 
-def registrar_log_externo(nivel, mensaje):
+def registrar_log_externo(nivel, mensaje,log_sheet):
     zona_arg = pytz.timezone("America/Argentina/Buenos_Aires")
     timestamp = datetime.now(zona_arg).strftime("%Y-%m-%d %H:%M:%S")
     try:
@@ -92,22 +91,13 @@ def registrar_log_externo(nivel, mensaje):
         logging.error(f"No se pudo registrar el log externo: {e}")
 
 
-def get_tickers():
+def get_tickers(sheet):
     logging.info(f"get_tickers work ok")
     return sheet.col_values(1)[1:]  # omite el encabezado
 
-def get_ohlcv(ticker):
-    try:
-        ohlcv = exchange.fetch_ohlcv(f"{ticker}/USDT", timeframe='1d', limit=100)
-        df = pd.DataFrame(ohlcv, columns=["timestamp", "open", "high", "low", "close", "volume"])
-        logging.info(f"Datos OHLCV obtenidos para {ticker}")
-        return df
-    except Exception as e:
-        logging.error(f"Error obteniendo datos de {ticker}: {e}")
-        registrar_log_externo("ERROR", f"Error al obtener OHLCV de {ticker}: {e}")
-        return pd.DataFrame()
 
-def tiene_posicion_abierta(ticker):
+
+def tiene_posicion_abierta(ticker,log_sheet,posiciones_sheet):
     try:
         rows = posiciones_sheet.get_all_values()
         for row in rows[1:]:
@@ -117,11 +107,10 @@ def tiene_posicion_abierta(ticker):
         return False
     except Exception as e:
         logging.error(f"Error al verificar posición abierta de {ticker}: {e}")
-        registrar_log_externo("ERROR", f"Error al verificar posición abierta para {ticker}: {e}")
+        registrar_log_externo("ERROR", f"Error al verificar posición abierta para {ticker}: {e}",log_sheet)
         return False
 
-def analizar_indicadores(df, ticker):
-    
+def analizar_indicadores(df, ticker, log_sheet, posiciones_sheet, cierres_sheet):
     try:
         macd = ta.macd(df['close'])
         if macd is not None and not macd.empty:
@@ -132,10 +121,9 @@ def analizar_indicadores(df, ticker):
             df['macd_line'] = df['macd_signal'] = df['macd_hist'] = None
     except Exception as e:
         logging.error(f"Error al calcular MACD para {ticker}: {e}")
-        registrar_log_externo("ERROR", f"Error al calcular MACD para {ticker}: {e}")
+        registrar_log_externo("ERROR", f"Error al calcular MACD para {ticker}: {e}", log_sheet)
 
     try:
-        
         adx = ta.adx(df['high'], df['low'], df['close'])
         if adx is not None and not adx.empty:
             df['adx'] = adx['ADX_14']
@@ -143,61 +131,62 @@ def analizar_indicadores(df, ticker):
             df['di-'] = adx['DMN_14']
         else:
             df['adx'] = df['di+'] = df['di-'] = None
-    
     except Exception as e:
         logging.error(f"Error al calcular ADX para {ticker}: {e}")
-        registrar_log_externo("ERROR", f"Error al calcular ADX para {ticker}: {e}")
-        
+        registrar_log_externo("ERROR", f"Error al calcular ADX para {ticker}: {e}", log_sheet)
+
     actual = df.iloc[-1]
     anterior = df.iloc[-2]
-
-    condiciones_actuales = (
-        actual['macd_line'] > 0 and
-        actual['di+'] > actual['di-'] and
-        actual['di+'] > actual['adx']
-    )
-
-    condiciones_anteriores = (
-        anterior['macd_line'] > 0 and
-        anterior['di+'] > anterior['di-'] and
-        anterior['di+'] > anterior['adx']
-    )
+    print(actual)
+    print(anterior)
     
-    mensaje_log_sin_emojis = (
-        f"[{ticker}] Condiciones actuales: MACD={actual['macd_line']:.2f}, "
-        f"DI+={actual['di+']:.2f}, DI-={actual['di-']:.2f}, ADX={actual['adx']:.2f} -> "
-        f"{'Cumple' if condiciones_actuales else 'No cumple'} | "
-        f"Condiciones anteriores -> {'Cumplía' if condiciones_anteriores else 'No cumplía'}"
-    )
+    # Validación previa para evitar errores por valores nulos
+    if actual[['macd_line', 'di+', 'di-', 'adx']].isnull().any() or anterior[['macd_line', 'di+', 'di-', 'adx']].isnull().any():
+        logging.warning(f"[{ticker}] Datos incompletos para análisis técnico.")
+        registrar_log_externo("WARNING", f"[{ticker}] Datos incompletos para análisis técnico. Se omite análisis.", log_sheet)
+        return False
 
-    mensaje_log_con_emojis = (
+    condiciones_actuales = all([
+        actual['macd_line'] > 0,
+        actual['di+'] > actual['di-'],
+        actual['di+'] > actual['adx']
+    ])
+
+    condiciones_anteriores = all([
+        anterior['macd_line'] > 0,
+        anterior['di+'] > anterior['di-'],
+        anterior['di+'] > anterior['adx']
+    ])
+
+    mensaje_log = (
         f"[{ticker}] Condiciones actuales: MACD={actual['macd_line']:.2f}, "
         f"DI+={actual['di+']:.2f}, DI-={actual['di-']:.2f}, ADX={actual['adx']:.2f} -> "
         f"{'Cumple ✅' if condiciones_actuales else 'No cumple ❌'} | "
         f"Condiciones anteriores -> {'Cumplía ✅' if condiciones_anteriores else 'No cumplía ❌'}"
     )
 
-    logging.info(mensaje_log_sin_emojis)
-    registrar_log_externo("INFO", mensaje_log_con_emojis)
+    logging.info(mensaje_log)
+    registrar_log_externo("INFO", mensaje_log, log_sheet)
 
     if condiciones_actuales and not condiciones_anteriores:
         return True
-    elif not condiciones_actuales and condiciones_anteriores and tiene_posicion_abierta(ticker):
-        registrar_cierre(ticker, df.iloc[-2])
+    elif not condiciones_actuales and condiciones_anteriores and tiene_posicion_abierta(ticker, log_sheet, posiciones_sheet):
+        registrar_cierre(ticker, anterior, log_sheet, cierres_sheet)
 
     return False
 
-def oportunidad_ya_registrada(fecha, ticker):
+
+def oportunidad_ya_registrada(fecha, ticker,oportunidades_sheet):
     registros = oportunidades_sheet.get_all_values()
     for row in registros[1:]:
         if row[0].startswith(fecha[:10]) and row[1] == ticker:
             return True
     return False
 
-def registrar_oportunidad(ticker, actual):
+def registrar_oportunidad(ticker, actual,log_sheet,oportunidades_sheet):
     zona_arg = pytz.timezone("America/Argentina/Buenos_Aires")
     fecha = datetime.now(zona_arg).strftime("%Y-%m-%d %H:%M:%S")
-    if not oportunidad_ya_registrada(fecha, ticker):
+    if not oportunidad_ya_registrada(fecha, ticker,oportunidades_sheet):
         oportunidades_sheet.insert_row([
             fecha,
             ticker,
@@ -209,10 +198,10 @@ def registrar_oportunidad(ticker, actual):
         ], index=2)
         mensaje_log = f"Oportunidad registrada para {ticker} el {fecha}"
         logging.info(mensaje_log)
-        registrar_log_externo("INFO", mensaje_log)
+        registrar_log_externo("INFO", mensaje_log,log_sheet)
 
 
-def registrar_cierre(ticker, anterior):
+def registrar_cierre(ticker, anterior,log_sheet,cierres_sheet):
     zona_arg = pytz.timezone("America/Argentina/Buenos_Aires")
     fecha = datetime.now(zona_arg).strftime("%Y-%m-%d %H:%M:%S")
     cierres_sheet.insert_row([
@@ -226,10 +215,10 @@ def registrar_cierre(ticker, anterior):
     ], index=2)
     mensaje_log = f"Cierre registrado para {ticker} el {fecha}"
     logging.info(mensaje_log)
-    registrar_log_externo("INFO", mensaje_log)
-    enviar_email(f"🔻 Señal de cierre detectada para {ticker} el {fecha}")
+    registrar_log_externo("INFO", mensaje_log,log_sheet)
+    enviar_email(f"🔻 Señal de cierre detectada para {ticker} el {fecha}",log_sheet)
 
-def enviar_alerta(ticker, actual):
+def enviar_alerta(ticker, actual,log_sheet,oportunidades_sheet):
     mensaje = (
         f"⚠️ Señal de oportunidad detectada para {ticker}:\n"
         f"MACD > 0, DI+ > DI- y DI+ > ADX solo en última vela\n"
@@ -237,10 +226,10 @@ def enviar_alerta(ticker, actual):
         f"MACD line: {actual['macd_line']:.2f}\nDI+: {actual['di+']:.2f}\nDI-: {actual['di-']:.2f}\nADX: {actual['adx']:.2f}\nRSI: {actual['rsi']:.2f}"
     )
     if "email" in ALERT_DESTINATIONS:
-        enviar_email(mensaje)
-    registrar_oportunidad(ticker, actual)
+        enviar_email(mensaje,log_sheet)
+    registrar_oportunidad(ticker, actual,log_sheet,oportunidades_sheet)
 
-def enviar_email(mensaje):
+def enviar_email(mensaje,log_sheet):
     msg = MIMEText(mensaje)
     msg["Subject"] = "Alerta de Oportunidad"
     if EMAIL_REMITENTE is not None:
@@ -260,51 +249,10 @@ def enviar_email(mensaje):
             server.login(EMAIL_REMITENTE, EMAIL_CONTRASENA)
             server.send_message(msg)
             logging.info("Correo enviado correctamente")
-            registrar_log_externo("INFO", "Correo enviado correctamente")
+            registrar_log_externo("INFO", "Correo enviado correctamente",log_sheet)
         except Exception as e:
             print(f"[EXCEPCIÓN EMAIL] {e}")
             logging.error(f"Error al enviar email: {e}")
-            registrar_log_externo("ERROR", f"Error al enviar email: {e}")
+            registrar_log_externo("ERROR", f"Error al enviar email: {e}",log_sheet)
 
 
-def ejecutar_agente():
-    inicio = time.time()
-    logging.info("Ejecutando agente...")
-    registrar_log_externo("INFO", "Ejecutando agente...")
-    tickers = get_tickers()
-    for ticker in tickers:
-        logging.info(f"Analizando ticker: {ticker}")
-        registrar_log_externo("INFO", f"Analizando ticker: {ticker}")
-        df = get_ohlcv(ticker)
-        if df.empty:
-            msg = f"No se obtuvieron datos para {ticker}"
-            logging.warning(msg)
-            registrar_log_externo("WARNING", msg)
-            continue
-        if analizar_indicadores(df, ticker):
-            actual = df.iloc[-1]
-            enviar_alerta(ticker, actual)
-    
-    if "email" in ALERT_DESTINATIONS:
-        mensaje = f"🧠 Agente ejecutado correctamente. Total de tickers analizados: {len(tickers)}.\n"
-        mensaje += "No se detectaron nuevas oportunidades."  # Podés mejorar el resumen dinámicamente
-        enviar_email(mensaje)
-    
-    fin = time.time()
-    duracion = fin - inicio
-    mensaje = f"Ejecución finalizada. Duración total: {duracion:.2f} segundos"
-    logging.info(mensaje)
-    registrar_log_externo("INFO", mensaje)
-    logging.info("Ejecución del agente finalizada.")
-    registrar_log_externo("INFO", "Ejecución del agente finalizada.")
-
-def main():
-    schedule.every().day.at("21:00").do(ejecutar_agente)
-    while True:
-        schedule.run_pending()
-        time.sleep(60)
-
-if __name__ == "__main__":
-    ejecutar_agente()
-    # main()
-    # enviar_email("Esto es una prueba de envío desde el bot.")
