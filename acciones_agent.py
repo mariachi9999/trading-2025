@@ -10,7 +10,7 @@ import logging
 import json
 import yfinance as yf
 
-from shared import analizar_indicadores, enviar_alerta, enviar_email, get_log_sheet, get_tickers, registrar_log_externo
+from shared import analizar_indicadores, enviar_alerta, enviar_email, get_log_sheet, get_tickers, registrar_log_buffer, registrar_log_externo, volcar_logs_en_sheets
 
 load_dotenv()
 
@@ -79,24 +79,28 @@ def get_accion_ohlcv(ticker):
         return df
     except Exception as e:
         logging.error(f"Error obteniendo datos de {ticker}: {e}")
-        registrar_log_externo("ERROR", f"Error al obtener OHLCV de {ticker}: {e}",log_sheet)
+        registrar_log_buffer("ERROR", f"Error al obtener OHLCV de {ticker}: {e}", ticker)
         return pd.DataFrame()
 
 def stocks_ejecutar_agente():
     inicio = time.time()
     logging.info("Ejecutando agente de stocks...")
-    registrar_log_externo("INFO", "Ejecutando agente...",log_sheet)
+    registrar_log_buffer("INFO", "Ejecutando agente...", "")
     tickers = get_tickers(sheet)
     for ticker in tickers:
+        ticker = str(ticker).strip()
         logging.info(f"Analizando ticker: {ticker}")
-        registrar_log_externo("INFO", f"Analizando ticker: {ticker}",log_sheet)
+        registrar_log_buffer("INFO", "Ejecutando agente...", ticker="")
         df = get_accion_ohlcv(ticker)
         if df.empty:
             msg = f"No se obtuvieron datos para {ticker}"
             logging.warning(msg)
-            registrar_log_externo("WARNING", msg,log_sheet)
+            registrar_log_buffer("WARNING", "No se obtuvieron datos", ticker)
             continue
-        if analizar_indicadores(df, ticker,log_sheet,posiciones_sheet,cierres_sheet):
+        
+        result = analizar_indicadores(df, ticker,log_sheet,posiciones_sheet,cierres_sheet)
+        
+        if result:
             actual = df.iloc[-1]
             enviar_alerta(ticker, actual,log_sheet,oportunidades_sheet)
     
@@ -109,10 +113,9 @@ def stocks_ejecutar_agente():
     duracion = fin - inicio
     mensaje = f"Ejecución finalizada. Duración total: {duracion:.2f} segundos"
     logging.info(mensaje)
-    registrar_log_externo("INFO", mensaje,log_sheet)
-    logging.info("Ejecución del agente finalizada.")
-    registrar_log_externo("INFO", "Ejecución del agente finalizada.",log_sheet)
+    registrar_log_buffer("INFO", mensaje, "Fin")
 
+    volcar_logs_en_sheets(log_sheet)
 # def main():
 #     schedule.every().day.at("21:00").do(ejecutar_agente)
 #     while True:

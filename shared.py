@@ -1,4 +1,5 @@
 # ai_agent_oportunidades/main.py
+from typing import List
 import ccxt
 import pandas as pd
 import pandas_ta as ta
@@ -107,7 +108,7 @@ def tiene_posicion_abierta(ticker,log_sheet,posiciones_sheet):
         return False
     except Exception as e:
         logging.error(f"Error al verificar posición abierta de {ticker}: {e}")
-        registrar_log_externo("ERROR", f"Error al verificar posición abierta para {ticker}: {e}",log_sheet)
+        # registrar_log_externo("ERROR", f"Error al verificar posición abierta para {ticker}: {e}",log_sheet)
         return False
 
 def analizar_indicadores(df, ticker, log_sheet, posiciones_sheet, cierres_sheet):
@@ -121,7 +122,7 @@ def analizar_indicadores(df, ticker, log_sheet, posiciones_sheet, cierres_sheet)
             df['macd_line'] = df['macd_signal'] = df['macd_hist'] = None
     except Exception as e:
         logging.error(f"Error al calcular MACD para {ticker}: {e}")
-        registrar_log_externo("ERROR", f"Error al calcular MACD para {ticker}: {e}", log_sheet)
+        # registrar_log_externo("ERROR", f"Error al calcular MACD para {ticker}: {e}", log_sheet)
 
     try:
         adx = ta.adx(df['high'], df['low'], df['close'])
@@ -133,7 +134,7 @@ def analizar_indicadores(df, ticker, log_sheet, posiciones_sheet, cierres_sheet)
             df['adx'] = df['di+'] = df['di-'] = None
     except Exception as e:
         logging.error(f"Error al calcular ADX para {ticker}: {e}")
-        registrar_log_externo("ERROR", f"Error al calcular ADX para {ticker}: {e}", log_sheet)
+        # registrar_log_externo("ERROR", f"Error al calcular ADX para {ticker}: {e}", log_sheet)
 
     actual = df.iloc[-1]
     anterior = df.iloc[-2]
@@ -141,7 +142,7 @@ def analizar_indicadores(df, ticker, log_sheet, posiciones_sheet, cierres_sheet)
     # Validación previa para evitar errores por valores nulos
     if actual[['macd_line', 'di+', 'di-', 'adx']].isnull().any() or anterior[['macd_line', 'di+', 'di-', 'adx']].isnull().any():
         logging.warning(f"[{ticker}] Datos incompletos para análisis técnico.")
-        registrar_log_externo("WARNING", f"[{ticker}] Datos incompletos para análisis técnico. Se omite análisis.", log_sheet)
+        # registrar_log_externo("WARNING", f"[{ticker}] Datos incompletos para análisis técnico. Se omite análisis.", log_sheet)
         return False
 
     condiciones_actuales = all([
@@ -164,7 +165,7 @@ def analizar_indicadores(df, ticker, log_sheet, posiciones_sheet, cierres_sheet)
     )
 
     logging.info(mensaje_log)
-    registrar_log_externo("INFO", mensaje_log, log_sheet)
+    registrar_log_buffer("INFO", mensaje_log, ticker)
 
     if condiciones_actuales and not condiciones_anteriores:
         return True
@@ -196,7 +197,7 @@ def registrar_oportunidad(ticker, actual,log_sheet,oportunidades_sheet):
         ], index=2)
         mensaje_log = f"Oportunidad registrada para {ticker} el {fecha}"
         logging.info(mensaje_log)
-        registrar_log_externo("INFO", mensaje_log,log_sheet)
+        # registrar_log_externo("INFO", mensaje_log,log_sheet)
 
 
 def registrar_cierre(ticker, anterior,log_sheet,cierres_sheet):
@@ -213,7 +214,7 @@ def registrar_cierre(ticker, anterior,log_sheet,cierres_sheet):
     ], index=2)
     mensaje_log = f"Cierre registrado para {ticker} el {fecha}"
     logging.info(mensaje_log)
-    registrar_log_externo("INFO", mensaje_log,log_sheet)
+    # registrar_log_externo("INFO", mensaje_log,log_sheet)
     enviar_email(f"🔻 Señal de cierre detectada para {ticker} el {fecha}",log_sheet)
 
 def enviar_alerta(ticker, actual,log_sheet,oportunidades_sheet):
@@ -247,10 +248,28 @@ def enviar_email(mensaje,log_sheet):
             server.login(EMAIL_REMITENTE, EMAIL_CONTRASENA)
             server.send_message(msg)
             logging.info("Correo enviado correctamente")
-            registrar_log_externo("INFO", "Correo enviado correctamente",log_sheet)
+            # registrar_log_externo("INFO", "Correo enviado correctamente",log_sheet)
         except Exception as e:
             print(f"[EXCEPCIÓN EMAIL] {e}")
             logging.error(f"Error al enviar email: {e}")
-            registrar_log_externo("ERROR", f"Error al enviar email: {e}",log_sheet)
+            # registrar_log_externo("ERROR", f"Error al enviar email: {e}",log_sheet)
 
 
+# Lista temporal que guarda logs antes de escribirlos en bloque
+log_buffer: list[list[str]] = []
+
+def registrar_log_buffer(nivel: str, mensaje: str, ticker: str = ""):
+    zona_arg = pytz.timezone("America/Argentina/Buenos_Aires")
+    timestamp = datetime.now(zona_arg).strftime("%Y-%m-%d %H:%M:%S")
+    log_buffer.append([timestamp, nivel.upper(), f"[{ticker}] {mensaje}" if ticker else mensaje])
+
+
+def volcar_logs_en_sheets(log_sheet):
+    global log_buffer
+    if not log_buffer:
+        return
+    try:
+        log_sheet.append_rows(log_buffer)
+        log_buffer = []  # Limpia el buffer
+    except Exception as e:
+        logging.error(f"Error al volcar logs en Sheets: {e}")
