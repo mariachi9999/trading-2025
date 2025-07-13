@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 import os
 import logging
 import json
+from ratelimit import limits, sleep_and_retry
 
 from shared import analizar_indicadores, enviar_alerta, enviar_email, get_log_sheet, get_tickers, registrar_log_externo
 
@@ -55,6 +56,12 @@ exchange = ccxt.binance()
 
 log_sheet = get_log_sheet("Cryptos_Log")
 
+
+# Binance permite 1200 requests/min (pero esto cambia por endpoint)
+ONE_MINUTE = 60
+
+@sleep_and_retry
+@limits(calls=60, period=ONE_MINUTE)
 def get_crypto_ohlcv(ticker):
     try:
         ohlcv = exchange.fetch_ohlcv(f"{ticker}/USDT", timeframe='1d', limit=100)

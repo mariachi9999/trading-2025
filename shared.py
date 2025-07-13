@@ -137,8 +137,6 @@ def analizar_indicadores(df, ticker, log_sheet, posiciones_sheet, cierres_sheet)
 
     actual = df.iloc[-1]
     anterior = df.iloc[-2]
-    print(actual)
-    print(anterior)
     
     # Validación previa para evitar errores por valores nulos
     if actual[['macd_line', 'di+', 'di-', 'adx']].isnull().any() or anterior[['macd_line', 'di+', 'di-', 'adx']].isnull().any():
