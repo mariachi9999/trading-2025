@@ -1,5 +1,5 @@
 # app.py
-from fastapi import FastAPI
+from fastapi import BackgroundTasks, FastAPI
 import logging
 
 from acciones_agent import stocks_ejecutar_agente
@@ -26,10 +26,10 @@ def crypto_run_agente():
         return {"error": str(e)}
 
 @app.get("/run-stock-agente")
-def stocks_run_agente():
+def stocks_run_agente(background_tasks: BackgroundTasks):
     try:
-        stocks_ejecutar_agente()
-        return {"message": "🧠 Agente ejecutado correctamente."}
+        background_tasks.add_task(stocks_ejecutar_agente)
+        return {"mensaje": "Agente de acciones en ejecución en segundo plano"}
     except Exception as e:
         logging.error(f"Error al ejecutar agente desde endpoint: {e}")
         return {"error": str(e)}
